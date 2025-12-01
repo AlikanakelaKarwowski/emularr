@@ -1,0 +1,14 @@
+appId: com.emularr.app
+productName: Emularr
+directories:
+  output: dist
+files:
+  - dist/renderer/**
+  - dist/main/**
+  - package.json
+win:
+  target: nsis
+mac:
+  target: dmg
+linux:
+  target: AppImage

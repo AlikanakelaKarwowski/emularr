@@ -4,7 +4,7 @@ import { Pause, Play, X, Loader2 } from 'lucide-react';
 interface DownloadProgress {
   downloadId: string;
   gameInfo: any;
-  type: 'torrent' | 'magnet' | 'direct';
+  type: 'direct';
   status: 'downloading' | 'paused' | 'completed' | 'error';
   progress: number;
   downloadSpeed: number;
@@ -103,21 +103,51 @@ export default function DownloadsView() {
   }, [activeDownloadIds]);
 
   const handlePause = async (downloadId: string) => {
-    await window.electronAPI.pauseDownload(downloadId);
+    try {
+      await window.electronAPI.pauseDownload(downloadId);
+      // Refresh downloads to get updated status
+      const allDownloads = await window.electronAPI.getAllDownloads();
+      if (allDownloads && Array.isArray(allDownloads)) {
+        setDownloads(allDownloads);
+      }
+    } catch (error) {
+      console.error('Error pausing download:', error);
+    }
   };
 
   const handleResume = async (downloadId: string) => {
-    await window.electronAPI.resumeDownload(downloadId);
+    try {
+      await window.electronAPI.resumeDownload(downloadId);
+      // Refresh downloads to get updated status
+      const allDownloads = await window.electronAPI.getAllDownloads();
+      if (allDownloads && Array.isArray(allDownloads)) {
+        setDownloads(allDownloads);
+      }
+    } catch (error) {
+      console.error('Error resuming download:', error);
+    }
   };
 
   const handleCancel = async (downloadId: string) => {
-    await window.electronAPI.cancelDownload(downloadId);
-    setDownloads((prev) => prev.filter(d => d.downloadId !== downloadId));
-    setActiveDownloadIds((prev) => {
-      const next = new Set(prev);
-      next.delete(downloadId);
-      return next;
-    });
+    try {
+      await window.electronAPI.cancelDownload(downloadId);
+      // Remove from active downloads immediately
+      setActiveDownloadIds((prev) => {
+        const next = new Set(prev);
+        next.delete(downloadId);
+        return next;
+      });
+      // Refresh downloads to get updated status
+      const allDownloads = await window.electronAPI.getAllDownloads();
+      if (allDownloads && Array.isArray(allDownloads)) {
+        setDownloads(allDownloads);
+      } else {
+        // If download was removed, filter it out
+        setDownloads((prev) => prev.filter(d => d.downloadId !== downloadId));
+      }
+    } catch (error) {
+      console.error('Error cancelling download:', error);
+    }
   };
 
   const formatSpeed = (bytes: number): string => {
@@ -230,12 +260,6 @@ export default function DownloadsView() {
                         : '--'}
                     </span>
                   </div>
-                  {download.type === 'torrent' || download.type === 'magnet' ? (
-                    <div>
-                      <span className="block">Peers</span>
-                      <span className="text-white">{download.peers || 0}</span>
-                    </div>
-                  ) : null}
                 </div>
 
                 {download.files && download.files.length > 0 && (

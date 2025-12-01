@@ -48,6 +48,24 @@ export default function LibraryView() {
     }
   };
 
+  const handleOpenLocation = async (game: Game) => {
+    if (!game.filePath) {
+      alert('No file path available for this game.');
+      return;
+    }
+
+    try {
+      if (!window.electronAPI) {
+        console.error('electronAPI not available');
+        return;
+      }
+      await window.electronAPI.openFileLocation(game.filePath!);
+    } catch (error: any) {
+      console.error('Error opening file location:', error);
+      alert(`Failed to open file location: ${error.message || 'Unknown error'}`);
+    }
+  };
+
   const filteredAndSortedGames = games
     .filter((game) => {
       if (filterBy === 'favorites' && !game.isFavorite) return false;
@@ -142,7 +160,8 @@ export default function LibraryView() {
             {filteredAndSortedGames.map((game) => (
               <div
                 key={game.id}
-                className="bg-gray-800 rounded-lg overflow-hidden border border-gray-700 hover:border-primary-500 transition-colors group relative"
+                onClick={() => handleOpenLocation(game)}
+                className="bg-gray-800 rounded-lg overflow-hidden border border-gray-700 hover:border-primary-500 transition-colors group relative cursor-pointer"
               >
                 <div className="aspect-square bg-gray-700 relative">
                   {game.boxArtPath ? (
@@ -158,7 +177,10 @@ export default function LibraryView() {
                   )}
                   <div className="absolute top-2 right-2 flex gap-2">
                     <button
-                      onClick={() => toggleFavorite(game.id, game.isFavorite || false)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleFavorite(game.id, game.isFavorite || false);
+                      }}
                       className={`p-2 rounded-full transition-colors ${
                         game.isFavorite
                           ? 'bg-red-500 text-white'
@@ -170,7 +192,10 @@ export default function LibraryView() {
                       />
                     </button>
                     <button
-                      onClick={() => handleDelete(game.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(game.id);
+                      }}
                       className="p-2 rounded-full bg-gray-900/50 text-gray-400 hover:bg-red-500 hover:text-white transition-colors"
                       title="Delete game"
                     >
@@ -195,7 +220,8 @@ export default function LibraryView() {
             {filteredAndSortedGames.map((game) => (
               <div
                 key={game.id}
-                className="bg-gray-800 rounded-lg p-4 border border-gray-700 hover:border-primary-500 transition-colors flex items-center gap-4"
+                onClick={() => handleOpenLocation(game)}
+                className="bg-gray-800 rounded-lg p-4 border border-gray-700 hover:border-primary-500 transition-colors flex items-center gap-4 cursor-pointer"
               >
                 <div className="w-16 h-16 bg-gray-700 rounded flex-shrink-0">
                   {game.boxArtPath ? (
@@ -216,7 +242,10 @@ export default function LibraryView() {
                 </div>
                 <div className="flex gap-2">
                   <button
-                    onClick={() => toggleFavorite(game.id, game.isFavorite || false)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleFavorite(game.id, game.isFavorite || false);
+                    }}
                     className={`p-2 rounded ${
                       game.isFavorite
                         ? 'text-red-500'
@@ -228,7 +257,10 @@ export default function LibraryView() {
                     />
                   </button>
                   <button
-                    onClick={() => handleDelete(game.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDelete(game.id);
+                    }}
                     className="p-2 rounded text-gray-400 hover:text-red-500"
                   >
                     <span className="text-sm">Delete</span>

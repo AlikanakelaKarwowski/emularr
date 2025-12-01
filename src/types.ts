@@ -2,11 +2,11 @@ export interface SearchResult {
   title: string;
   source: string;
   downloadUrl: string;
-  type: 'torrent' | 'magnet' | 'direct';
+  type: 'direct';
   size?: string;
-  seeders?: number;
-  leechers?: number;
   platform?: string;
+  region?: string;
+  language?: string;
   metadata?: {
     description?: string;
     releaseDate?: string;

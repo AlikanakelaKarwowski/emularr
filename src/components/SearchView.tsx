@@ -123,6 +123,14 @@ export default function SearchView() {
                 {result.platform && (
                   <p className="text-sm text-gray-400 mb-2">Platform: {result.platform}</p>
                 )}
+                <div className="flex gap-3 text-sm text-gray-400 mb-2">
+                  {result.region && (
+                    <span className="bg-gray-700 px-2 py-1 rounded">Region: {result.region}</span>
+                  )}
+                  {result.language && (
+                    <span className="bg-gray-700 px-2 py-1 rounded">Language: {result.language}</span>
+                  )}
+                </div>
                 {result.size && (
                   <p className="text-sm text-gray-400 mb-2">Size: {result.size}</p>
                 )}

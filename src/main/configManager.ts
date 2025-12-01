@@ -7,12 +7,14 @@ interface Config {
   defaultPlatform?: string;
   autoStartDownloads?: boolean;
   maxConcurrentDownloads?: number;
+  downloadThreads?: number; // Number of parallel chunks for multi-threaded downloads
 }
 
 const defaultConfig: Config = {
   downloadPath: path.join(app.getPath('documents'), 'Emularr', 'Games'),
   autoStartDownloads: true,
   maxConcurrentDownloads: 3,
+  downloadThreads: 8, // Default to 8 parallel chunks
 };
 
 const store = new Store<Config>({
@@ -35,5 +37,13 @@ export const configManager = {
 
   setDownloadPath(path: string): void {
     store.set('downloadPath', path);
+  },
+
+  getDownloadThreads(): number {
+    return store.get('downloadThreads', defaultConfig.downloadThreads || 8);
+  },
+
+  setDownloadThreads(threads: number): void {
+    store.set('downloadThreads', threads);
   },
 };

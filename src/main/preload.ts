@@ -5,7 +5,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   setConfig: (config: any) => ipcRenderer.invoke('set-config', config),
   selectDirectory: () => ipcRenderer.invoke('select-directory'),
   searchGames: (query: string) => ipcRenderer.invoke('search-games', query),
-  startDownload: (url: string, type: 'torrent' | 'magnet' | 'direct', gameInfo: any) =>
+  startDownload: (url: string, type: 'direct', gameInfo: any) =>
     ipcRenderer.invoke('start-download', url, type, gameInfo),
   getDownloadProgress: (downloadId: string) =>
     ipcRenderer.invoke('get-download-progress', downloadId),
@@ -23,4 +23,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
   addTag: (gameId: string, tag: string) => ipcRenderer.invoke('add-tag', gameId, tag),
   removeTag: (gameId: string, tag: string) => ipcRenderer.invoke('remove-tag', gameId, tag),
   getAllTags: () => ipcRenderer.invoke('get-all-tags'),
+  openFileLocation: (filePath: string) => ipcRenderer.invoke('open-file-location', filePath),
 });

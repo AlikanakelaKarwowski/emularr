@@ -3,7 +3,7 @@ export interface ElectronAPI {
   setConfig: (config: any) => Promise<void>;
   selectDirectory: () => Promise<string | null>;
   searchGames: (query: string) => Promise<any[]>;
-  startDownload: (url: string, type: 'torrent' | 'magnet' | 'direct', gameInfo: any) => Promise<string>;
+  startDownload: (url: string, type: 'direct', gameInfo: any) => Promise<string>;
   getDownloadProgress: (downloadId: string) => Promise<any>;
   getAllDownloads: () => Promise<any[]>;
   getActiveDownloadIds: () => Promise<string[]>;
@@ -18,6 +18,7 @@ export interface ElectronAPI {
   addTag: (gameId: string, tag: string) => Promise<boolean>;
   removeTag: (gameId: string, tag: string) => Promise<boolean>;
   getAllTags: () => Promise<string[]>;
+  openFileLocation: (filePath: string) => Promise<boolean>;
 }
 
 declare global {

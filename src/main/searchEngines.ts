@@ -1,16 +1,15 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
-import * as https from "https";
 
 export interface SearchResult {
     title: string;
     source: string;
     downloadUrl: string;
-    type: "torrent" | "magnet" | "direct";
+    type: "direct";
     size?: string;
-    seeders?: number;
-    leechers?: number;
     platform?: string;
+    region?: string;
+    language?: string;
     metadata?: {
         description?: string;
         releaseDate?: string;
@@ -112,7 +111,7 @@ class SearchEngines {
                         title,
                         source: "FitGirl Repacks",
                         downloadUrl: link,
-                        type: "torrent",
+                        type: "direct",
                         platform: "PC",
                     });
                 }
@@ -167,21 +166,24 @@ class SearchEngines {
                 for (const link of game.links) {
                     if (!link.url) continue;
 
-                    // Determine link type based on URL
-                    let linkType: "torrent" | "magnet" | "direct" = "direct";
-                    if (link.url.startsWith("magnet:")) {
-                        linkType = "magnet";
-                    } else if (link.url.endsWith(".torrent") || link.type?.toLowerCase().includes("torrent")) {
-                        linkType = "torrent";
+                    // Only include direct download links (skip torrents and magnets)
+                    if (
+                        link.url.startsWith("magnet:") ||
+                        link.url.endsWith(".torrent") ||
+                        link.type?.toLowerCase().includes("torrent")
+                    ) {
+                        continue; // Skip torrent/magnet links
                     }
 
                     results.push({
                         title: game.title,
                         source: link.host || "CrocDB",
                         downloadUrl: link.url,
-                        type: linkType,
+                        type: "direct",
                         size: link.size_str || (link.size ? this.formatBytes(link.size) : undefined),
                         platform: game.platform,
+                        region: link.region || game.region || undefined,
+                        language: link.language || game.language || undefined,
                         metadata: {
                             description: game.title,
                         },
@@ -264,20 +266,24 @@ class SearchEngines {
                 for (const link of game.links) {
                     if (!link.url) continue;
 
-                    let linkType: "torrent" | "magnet" | "direct" = "direct";
-                    if (link.url.startsWith("magnet:")) {
-                        linkType = "magnet";
-                    } else if (link.url.endsWith(".torrent") || link.type?.toLowerCase().includes("torrent")) {
-                        linkType = "torrent";
+                    // Only include direct download links (skip torrents and magnets)
+                    if (
+                        link.url.startsWith("magnet:") ||
+                        link.url.endsWith(".torrent") ||
+                        link.type?.toLowerCase().includes("torrent")
+                    ) {
+                        continue; // Skip torrent/magnet links
                     }
 
                     results.push({
                         title: game.title,
                         source: link.host || "CrocDB",
                         downloadUrl: link.url,
-                        type: linkType,
+                        type: "direct",
                         size: link.size_str || (link.size ? this.formatBytes(link.size) : undefined),
                         platform: game.platform,
+                        region: link.region || game.region || undefined,
+                        language: link.language || game.language || undefined,
                         metadata: {
                             description: game.title,
                         },

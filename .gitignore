@@ -12,6 +12,7 @@ dist/
 # Electron
 out/
 build/
+release/
 
 # Environment
 .env

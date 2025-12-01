@@ -9,15 +9,24 @@
     "dev:electron": "wait-on http://localhost:5173 && electron .",
     "build": "npm run build:main && npm run build:renderer && electron-builder",
     "build:main": "tsc -p tsconfig.main.json",
-    "build:renderer": "vite build",
+    "build:renderer": "vite build && node scripts/fix-html.js",
+    "build:all": "npm run build:main && npm run build:renderer",
     "preview": "vite preview",
-    "postinstall": "npm run build:main"
+    "postinstall": "npm run build:main",
+    "package": "npm run build:all && electron-builder",
+    "package:win": "npm run build:all && electron-builder --win",
+    "package:mac": "npm run build:all && electron-builder --mac",
+    "package:linux": "npm run build:all && electron-builder --linux",
+    "package:win32": "npm run build:all && electron-builder --win --x64",
+    "package:win64": "cross-env CSC_IDENTITY_AUTO_DISCOVERY=false npm run build:all && node -e \"try { require('fs').rmSync('release/win-unpacked', { recursive: true, force: true }); } catch(e) { console.log('Note: Could not clean release folder. Please close Emularr.exe if running.'); }\" && electron-builder --win --x64",
+    "package:mac-x64": "npm run build:all && electron-builder --mac --x64",
+    "package:mac-arm64": "npm run build:all && electron-builder --mac --arm64",
+    "package:linux-x64": "npm run build:all && electron-builder --linux --x64"
   },
   "keywords": [
     "game",
     "rom",
     "emulator",
-    "torrent",
     "download"
   ],
   "author": "",
@@ -31,6 +40,7 @@
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.16",
     "concurrently": "^8.2.2",
+    "cross-env": "^10.1.0",
     "electron": "^28.0.0",
     "electron-builder": "^24.9.1",
     "postcss": "^8.4.32",
@@ -44,12 +54,10 @@
     "cheerio": "^1.0.0-rc.12",
     "electron-store": "^8.1.0",
     "lucide-react": "^0.294.0",
-    "magnet-uri": "^6.0.0",
     "node-stream-zip": "^1.15.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tar": "^6.2.1",
-    "webtorrent": "^1.7.1",
     "yauzl": "^2.10.0"
   }
 }

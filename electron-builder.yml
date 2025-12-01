@@ -1,14 +1,44 @@
 appId: com.emularr.app
 productName: Emularr
 directories:
-  output: dist
+  output: release
+  buildResources: build
 files:
-  - dist/renderer/**
-  - dist/main/**
+  - dist/**/*
   - package.json
+  - node_modules/**
+  - "!src/**/*"
+  - "!.git/**/*"
+  - "!tsconfig.*"
+  - "!vite.config.*"
+  - "!tailwind.config.*"
+  - "!postcss.config.*"
+  - "!index.html"
+  - "!scripts/**/*"
+asar: true
 win:
-  target: nsis
+  target:
+    - target: dir
+      arch:
+        - x64
+  sign: false
+  verifyUpdateCodeSignature: false
+  signingHashAlgorithms: []
+  executableName: Emularr
 mac:
-  target: dmg
+  target:
+    - target: dir
+      arch:
+        - x64
+        - arm64
+  identity: null
 linux:
-  target: AppImage
+  target:
+    - target: dir
+      arch:
+        - x64
+        - ia32
+        - arm64
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true

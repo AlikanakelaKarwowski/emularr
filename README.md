@@ -4,59 +4,66 @@ A modern desktop application for searching, downloading, and managing game ROMs 
 
 ## Features
 
-- **Multi-Source Search**: Search across multiple sources including:
-  - Vimm's Lair
-  - Myrient
-  - FitGirl Repacks
-  - CrocDB
-  - And more...
+-   **Multi-Source Search**: Search across multiple sources including:
+    -   [ ] Vimm's Lair (planned)
+    -   [ ] Myrient (planned)
+    -   [ ] FitGirl Repacks (planned)
+    -   [x] CrocDB
 
-- **Download Management**:
-  - Support for torrent/magnet links and direct downloads
-  - Real-time download progress tracking
-  - Pause/resume/cancel downloads
-  - Shows seeders, leechers, and connection info for torrents
+**PLANNED**
 
-- **Game Library**:
-  - Organize your downloaded games
-  - Filter by platform, genre, release year
-  - Favorites and playlists support
-  - Box art fetching (when available)
+-   **Download Management**:
 
-- **Settings**:
-  - Configurable download location
-  - Max concurrent downloads
-  - Auto-start downloads option
+    -   Support for torrent/magnet links and direct downloads
+    -   Real-time download progress tracking
+    -   Pause/resume/cancel downloads
+    -   Shows seeders, leechers, and connection info for torrents
+
+-   **Game Library**:
+
+    -   Organize your downloaded games
+    -   Filter by platform, genre, release year
+    -   Favorites and playlists support
+    -   Box art fetching (when available)
+
+-   **Settings**:
+    -   Configurable download location
+    -   Max concurrent downloads
+    -   Auto-start downloads option
 
 ## Tech Stack
 
-- **Electron** - Desktop application framework
-- **React** - UI library
-- **TypeScript** - Type safety
-- **Tailwind CSS** - Styling
-- **WebTorrent** - Torrent downloading
-- **Axios** - HTTP requests
-- **Cheerio** - Web scraping
+-   **Electron** - Desktop application framework
+-   **React** - UI library
+-   **TypeScript** - Type safety
+-   **Tailwind CSS** - Styling
+-   **WebTorrent** - Torrent downloading
+-   **Axios** - HTTP requests
+-   **Cheerio** - Web scraping
 
 ## Installation
 
 1. Clone the repository:
+
 ```bash
 git clone <repository-url>
 cd Emularr
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Build the main process:
+
 ```bash
 npm run build:main
 ```
 
 4. Run in development mode:
+
 ```bash
 npm run dev
 ```
@@ -103,9 +110,9 @@ Emularr/
 
 ## Notes
 
-- Some websites may have anti-scraping measures that require adjustments to the search engines
-- Box art fetching may require API keys for certain services (IGDB, etc.)
-- Make sure you have proper permissions to download and store files in your chosen directory
+-   Some websites may have anti-scraping measures that require adjustments to the search engines
+-   Box art fetching may require API keys for certain services (IGDB, etc.)
+-   Make sure you have proper permissions to download and store files in your chosen directory
 
 ## License
 
